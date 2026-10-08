@@ -83,7 +83,21 @@ game folder on the device (the script doesn't need re-running unless `xinput1_3.
 - **Back up saves:** `~/Games/SPFL26-prefix/pfx/drive_c/users/steamuser/Documents/KONAMI/`
 - Keep a copy of the game folder somewhere safe, the script does not install the game itself.
 
+## License
+
+The script and documentation are released under the [MIT License](LICENSE): use, copy, modify and share freely.
+The images in `artwork/` are **not** covered by it (third-party artwork, see `artwork/README.md`).
+SP Football Life 2026 itself is not included and is not part of this project; get it from SmokePatch.
+This project is not affiliated with SmokePatch, Konami or Valve.
+
 ## Credits
 
-SmokePatch (the game), GloriousEggroll (GE-Proton), ptitSeb (Box64), eskay993 (the original Lutris script and the
-Sider/`ddraw.dll`/aspect-ratio knowledge this is based on).
+- [SmokePatch](https://www.pessmokepatch.com/): SP Football Life (the game and mod).
+- [GloriousEggroll](https://github.com/GloriousEggroll/proton-ge-custom): GE-Proton.
+- [ptitSeb](https://github.com/ptitSeb/box64): Box64, which makes x86 programs run on ARM.
+- [eskay993](https://github.com/eskay993/gamefiles/tree/main/sp-football-life-2026): the original Lutris/Wine script for
+  SPFL 2026 on Linux. The `ddraw.dll` trick for Sider, the launcher `.bat`, the DLL overrides and the settings-file layout come from there.
+- The SPFL community thread on [evoweb](https://evoweb.uk/threads/sp-fl-2026-on-linux.106593/), which pointed to Wine/GE-Proton 9.x
+  as the working version.
+- SteamGridDB and its community artists: the Steam artwork (see `artwork/README.md`).
+- Konkr Pocket Fit SteamOS ARM image creators, for the Box64 / x86 binfmt setup this relies on.
