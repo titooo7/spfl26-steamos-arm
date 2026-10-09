@@ -49,6 +49,7 @@ play straight away, or **Close**. It works from Game Mode, so you never need to 
 - **Speed:** the game is limited by the CPU (x86 emulation), not the GPU, so lowering the resolution barely helps. The launcher therefore sets
   these Box64 flags: `STRONGMEM=0 FASTNAN=1 FASTROUND=1 CALLRET=1 WEAKBARRIER=0` (all `BOX64_DYNAREC_*`). On the Konkr they took the game from
   about 40-45 fps to a steady 60 fps at 1080p. If a device has crashes or glitches, delete that line from `~/Games/launch-spfl26.sh`.
+- **V-Sync is disabled by default** (with Enable 2 the game was held back below what the device can do). You can change it in the Settings shortcut.
 - **Smoother with a fixed frame rate:** the script doesn't set a cap, but locking the rate to your screen helps. Add `export DXVK_FRAME_RATE=60`
   to `~/Games/launch-spfl26.sh` (before the last line, `exec ...`) and set the refresh rate to **120 Hz** in the quick access menu. If your device only
   reaches about 45 fps, use `45` with **90 Hz** instead (45 divides evenly into 90).
@@ -93,7 +94,7 @@ The script does this:
    - `PROTON_NO_ESYNC=1 PROTON_NO_FSYNC=1 PROTON_NO_NTSYNC=1` (needed: Wine under Box64 deadlocks on ntsync)
    - `PROTON_USE_XALIA=0`, `ENABLE_GAMESCOPE_WSI=0`
    - the Wine prefix in `~/Games/SPFL26-prefix`
-4. Creates that prefix and installs a default `settings.dat` (XInput, Full Screen, V-Sync Enable 2, 1920x1080) into
+4. Creates that prefix and installs a default `settings.dat` (XInput, Full Screen, V-Sync disabled, 1920x1080) into
    `…/pfx/drive_c/users/steamuser/Documents/KONAMI/eFootball PES 2021 SEASON UPDATE/`.
 5. Installs the settings tool `~/Games/spfl26-settings.sh`.
 6. Creates two Desktop icons and two non-Steam shortcuts (overlay off): **SP Football Life 2026** and
