@@ -14,8 +14,9 @@ Sider mods and the built-in controller all work in Game Mode.
    ./install-spfl26.sh "/home/steamos/Games/SP Football Life 2026"
    ```
    If your game is in the default `~/Games/SP Football Life 2026`, no argument is needed.
-3. When it asks, let it close Steam (needed to add the Game Mode shortcut). Switch to Game Mode and start
+3. When it asks, let it close Steam (needed to add the Game Mode shortcuts). Switch to Game Mode and start
    **SP Football Life 2026** from *Library > Non-Steam*. Or double-click the Desktop icon.
+   There is also a **SP Football Life 2026 - Settings** shortcut (resolution, V-Sync...) that can save and launch the game.
 
 The script is safe to re-run. It needs internet once (about 450 MB for GE-Proton 9).
 
@@ -38,9 +39,11 @@ The script is safe to re-run. It needs internet once (about 450 MB for GE-Proton
    - prefix in `~/Games/SPFL26-prefix`
 4. Creates the Wine prefix and installs a default `settings.dat` (XInput, Full Screen, V-Sync Enable 2, 1920x1080)
    into `…/pfx/drive_c/users/steamuser/Documents/KONAMI/eFootball PES 2021 SEASON UPDATE/`.
-5. Creates a Desktop icon and adds a non-Steam shortcut (Steam overlay off) pointing at the launcher, and installs the
-   Steam library artwork from `artwork/` (grid, portrait, hero, logo, icon) under the shortcut's ID. Existing images are never
-   overwritten, so you can replace them later with the Decky SteamGridDB plugin.
+5. Installs the settings tool `~/Games/spfl26-settings.sh` (see "Settings and mods").
+6. Creates two Desktop icons and two non-Steam shortcuts (Steam overlay off): **SP Football Life 2026** (the launcher) and
+   **SP Football Life 2026 - Settings** (the settings tool). It installs the Steam library artwork from `artwork/` (game) and
+   `artwork/settings/` (Settings) under each shortcut's ID. Existing images are never overwritten, so you can replace them
+   later with the Decky SteamGridDB plugin.
 
 ## Why GE-Proton 9 + Box64 (important, don't "upgrade")
 
@@ -60,7 +63,9 @@ hooks this game relies on, so stay on 9.x.
 
 - **Changing resolution / full screen / V-Sync / controller type:** double-click the **SP Football Life 2026 - Settings** Desktop icon
   (or the same-named entry in Steam, or run `~/Games/spfl26-settings.sh`). It is a small native replacement for the game's
-  `Settings.exe`, which needs .NET/Mono and crashes under Box64. Pick the values, press **OK**, close the game first.
+  `Settings.exe`, which needs .NET/Mono and crashes under Box64. Close the game first, pick the values and press **OK**.
+  It then asks **"Launch the game now?"**: choose **Launch game** to start the game with the new settings, or **Close**.
+  It works from Game Mode too, so you can change settings and start playing without going back to Desktop Mode.
 - The in-game menu you see with a controller button / Space is **Sider** (mod loader: stadiums, kits, camera…).
 - Keep the Steam overlay **off** for this shortcut (the script does that).
 - Gameplay "Switcher": the Windows `FL26 switcher.exe` needs .NET and wasn't tested on ARM. The repo
