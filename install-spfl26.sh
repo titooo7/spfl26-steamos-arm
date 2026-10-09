@@ -53,6 +53,7 @@ G="$GAME_DIR"
 export STEAM_COMPAT_CLIENT_INSTALL_PATH="\$HOME/.local/share/Steam" STEAM_COMPAT_DATA_PATH="$PREFIX" SteamAppId="\${SteamAppId:-0}" SteamGameId="\${SteamGameId:-0}"
 export WINEDLLOVERRIDES="ddraw=n,b;steam_api64=n,b;lsteamclient=d" ENABLE_GAMESCOPE_WSI=0 WINEDEBUG=-all
 export PROTON_USE_XALIA=0 PROTON_NO_ESYNC=1 PROTON_NO_FSYNC=1 PROTON_NO_NTSYNC=1 BOX64_NOBANNER=1
+export BOX64_DYNAREC_STRONGMEM=0 BOX64_DYNAREC_FASTNAN=1 BOX64_DYNAREC_FASTROUND=1 BOX64_DYNAREC_CALLRET=1 BOX64_DYNAREC_WEAKBARRIER=0  # speed flags; delete this line if a device has problems
 [ -n "\$DISPLAY" ] || export DISPLAY=:0
 [ -n "\$XDG_RUNTIME_DIR" ] || export XDG_RUNTIME_DIR=/run/user/\$(id -u)
 mkdir -p "$PREFIX"; cd "\$G" || exit 1
