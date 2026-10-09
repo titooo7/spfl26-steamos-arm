@@ -26,7 +26,8 @@ The script is safe to run again. It needs internet once (about 450 MB download) 
 
 ## Requirements
 
-- A SteamOS ARM image with **Box64** and x86 support already set up (the Konkr image has it).
+- A SteamOS ARM image with **Box64** and x86 support already set up. Tested on **SteamOS for ARM v1.3** from
+  [hashtagbasit/SteamOS-ARM-Port](https://github.com/hashtagbasit/SteamOS-ARM-Port/) on a Konkr Pocket Fit. Other builds may work if they provide Box64.
   Check with `box64 --version` and `cat /proc/sys/fs/binfmt_misc/box64`.
 - `curl` and `python3` (normally already installed).
 
@@ -121,4 +122,4 @@ This project is not affiliated with SmokePatch, Konami or Valve.
 - The SPFL community thread on [evoweb](https://evoweb.uk/threads/sp-fl-2026-on-linux.106593/), which pointed to Wine/GE-Proton 9.x
   as the working version.
 - SteamGridDB and its community artists: the Steam artwork (see `artwork/README.md`).
-- Konkr Pocket Fit SteamOS ARM image creators, for the Box64 / x86 binfmt setup this relies on.
+- [hashtagbasit](https://github.com/hashtagbasit/SteamOS-ARM-Port/) and contributors: the SteamOS ARM port (v1.3) with the Box64 / x86 setup this relies on.
