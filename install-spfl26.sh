@@ -93,13 +93,15 @@ Terminal=false
 Categories=Game;
 DESK
 chmod +x "$HOME/Desktop/SPFL26.desktop"
+SICON="$HOME/Games/spfl26-settings-icon.png"
+if [ -f "$SCRIPT_DIR/artwork/settings/icon.png" ]; then cp -f "$SCRIPT_DIR/artwork/settings/icon.png" "$SICON"; else SICON="$ICON"; fi
 cat > "$HOME/Desktop/SPFL26-Settings.desktop" <<DESK
 [Desktop Entry]
 Type=Application
 Name=SP Football Life 2026 - Settings
 Exec=$SETTINGS_LAUNCHER
 Path=$GAME_DIR
-Icon=$ICON
+Icon=$SICON
 Terminal=false
 Categories=Game;
 DESK
@@ -125,13 +127,13 @@ d=open(p,"rb").read() if os.path.exists(p) else b"\x00shortcuts\x00\x08\x08"
 if os.path.exists(p) and not os.path.exists(p+".bak-before-spfl26"): shutil.copy(p,p+".bak-before-spfl26")
 s=lambda k,v:b"\x01"+k+b"\x00"+v+b"\x00"
 i=lambda k,v:b"\x02"+k+b"\x00"+struct.pack("<I",v)
-def put_art(appid):
+def put_art(appid,art):
     gd=os.path.join(os.path.dirname(p),"grid"); os.makedirs(gd,exist_ok=True); n=0
     for src,dst in SRC:
         sp=os.path.join(art,src); dp=os.path.join(gd,dst%appid)
         if os.path.exists(sp) and not os.path.exists(dp): shutil.copy(sp,dp); n+=1
     return n
-for exe,label in ((exe_game,b"SP Football Life 2026"),(exe_set,b"SP Football Life 2026 - Settings")):
+for exe,label,adir in ((exe_game,b"SP Football Life 2026",art),(exe_set,b"SP Football Life 2026 - Settings",os.path.join(art,"settings") if os.path.isdir(os.path.join(art,"settings")) else art)):
     exe_q=('"%s"'%exe).encode(); appid_n=(zlib.crc32(exe_q+label)|0x80000000)&0xffffffff
     if exe_q in d:
         print("Steam shortcut already present:",label.decode())
@@ -141,7 +143,7 @@ for exe,label in ((exe_game,b"SP Football Life 2026"),(exe_set,b"SP Football Lif
          +i(b"IsHidden",0)+i(b"AllowDesktopConfig",1)+i(b"AllowOverlay",0)+i(b"OpenVR",0)+i(b"Devkit",0)+s(b"DevkitGameID",b"")+i(b"DevkitOverrideAppID",0)+i(b"LastPlayTime",0)+s(b"FlatpakAppID",b"")+b"\x01sortas\x00\x00\x00tags\x00\x08\x08")
         assert d.endswith(b"\x08\x08")
         d=d[:-2]+e+b"\x08\x08"; print("Steam shortcut added:",label.decode())
-    print("  artwork: %d file(s) added"%put_art(appid_n) if os.path.isdir(art) else "  no artwork folder, skipped")
+    print("  artwork: %d file(s) added"%put_art(appid_n,adir) if os.path.isdir(adir) else "  no artwork folder, skipped")
 open(p,"wb").write(d)
 PY
   fi

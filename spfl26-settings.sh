@@ -44,4 +44,12 @@ struct.pack_into("<I",d,12,w); struct.pack_into("<I",d,16,h)
 open(p,"wb").write(d)
 print("saved:",res,scr,"V-Sync",vs,ctl)
 PY
-zenity --info --text="Saved. Start the game to apply." --width=300 2>/dev/null
+if zenity --question --title="SP Football Life 2026" --text="Settings saved.\n\nLaunch the game now?" \
+     --ok-label="Launch game" --cancel-label="Close" --width=300 2>/dev/null; then
+  LAUNCHER="${SPFL26_LAUNCHER:-$HOME/Games/launch-spfl26.sh}"
+  if [ -x "$LAUNCHER" ]; then
+    setsid nohup "$LAUNCHER" >/dev/null 2>&1 < /dev/null &
+  else
+    zenity --error --text="Launcher not found:\n$LAUNCHER" 2>/dev/null
+  fi
+fi
