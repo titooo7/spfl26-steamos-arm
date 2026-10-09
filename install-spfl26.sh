@@ -59,6 +59,8 @@ mkdir -p "$PREFIX"; cd "\$G" || exit 1
 exec "$TOOLS_DIR/$PROTON_TAG/proton" run "\$G/FL_2026.bat"
 LAUNCH
 chmod +x "$LAUNCHER"
+SETTINGS_LAUNCHER="$HOME/Games/spfl26-settings.sh"
+if [ -f "$SCRIPT_DIR/spfl26-settings.sh" ]; then cp -f "$SCRIPT_DIR/spfl26-settings.sh" "$SETTINGS_LAUNCHER"; chmod +x "$SETTINGS_LAUNCHER"; fi
 
 say "Creating Wine prefix (first time takes a few minutes under emulation)"
 export STEAM_COMPAT_CLIENT_INSTALL_PATH="$HOME/.local/share/Steam" STEAM_COMPAT_DATA_PATH="$PREFIX" SteamAppId=0 SteamGameId=0
@@ -91,6 +93,17 @@ Terminal=false
 Categories=Game;
 DESK
 chmod +x "$HOME/Desktop/SPFL26.desktop"
+cat > "$HOME/Desktop/SPFL26-Settings.desktop" <<DESK
+[Desktop Entry]
+Type=Application
+Name=SP Football Life 2026 - Settings
+Exec=$SETTINGS_LAUNCHER
+Path=$GAME_DIR
+Icon=$ICON
+Terminal=false
+Categories=Game;
+DESK
+chmod +x "$HOME/Desktop/SPFL26-Settings.desktop"
 
 say "Steam shortcut (for Game Mode)"
 SCV=$(ls "$HOME"/.local/share/Steam/userdata/*/config/shortcuts.vdf 2>/dev/null | head -1 || true)
@@ -104,31 +117,32 @@ else
   if pgrep -x steam >/dev/null; then
     echo "Steam still running: skipped. In Steam use 'Add a Non-Steam Game' -> SP Football Life 2026."
   else
-    python3 - "$SCV" "$LAUNCHER" "$GAME_DIR" "$SCRIPT_DIR/artwork" <<'PY'
-import sys,re,zlib,shutil,struct
-import os
-p,exe,start,art=sys.argv[1:5]
-d=open(p,"rb").read() if __import__("os").path.exists(p) else b"\x00shortcuts\x00\x08\x08"
-exe_q=('"%s"'%exe).encode(); name=b"SP Football Life 2026"
-appid_n=(zlib.crc32(exe_q+name)|0x80000000)&0xffffffff
-def put_art():
-    gd=os.path.join(os.path.dirname(p),"grid"); os.makedirs(gd,exist_ok=True); n=0
-    for src,dst in (("grid.png","%d.png"),("portrait.png","%dp.png"),("hero.png","%d_hero.png"),("logo.png","%d_logo.png"),("icon.png","%d_icon.png"),("logo-position.json","%d.json")):
-        sp=os.path.join(art,src); dp=os.path.join(gd,dst%appid_n)
-        if os.path.exists(sp) and not os.path.exists(dp): shutil.copy(sp,dp); n+=1
-    print("Steam artwork: %d file(s) added"%n if os.path.isdir(art) else "No artwork folder next to the script, skipped")
-if b"launch-spfl26.sh" in d: print("Steam shortcut already present"); put_art(); sys.exit()
-if os.path.exists(p): shutil.copy(p,p+".bak-before-spfl26")
-ids=[int(x) for x in re.findall(rb"\x00(\d+)\x00\x02appid\x00",d)]
-idx=(max(ids)+1) if ids else 0
-exe=('"%s"'%exe).encode(); name=b"SP Football Life 2026"; start=('"%s"'%start).encode()
-appid=struct.pack("<I",(zlib.crc32(exe+name)|0x80000000)&0xffffffff)
+    python3 - "$SCV" "$LAUNCHER" "$SETTINGS_LAUNCHER" "$GAME_DIR" "$SCRIPT_DIR/artwork" <<'PY'
+import sys,re,zlib,shutil,struct,os
+p,exe_game,exe_set,start,art=sys.argv[1:6]
+SRC=(("grid.png","%d.png"),("portrait.png","%dp.png"),("hero.png","%d_hero.png"),("logo.png","%d_logo.png"),("icon.png","%d_icon.png"),("logo-position.json","%d.json"))
+d=open(p,"rb").read() if os.path.exists(p) else b"\x00shortcuts\x00\x08\x08"
+if os.path.exists(p) and not os.path.exists(p+".bak-before-spfl26"): shutil.copy(p,p+".bak-before-spfl26")
 s=lambda k,v:b"\x01"+k+b"\x00"+v+b"\x00"
 i=lambda k,v:b"\x02"+k+b"\x00"+struct.pack("<I",v)
-e=(b"\x00"+str(idx).encode()+b"\x00\x02appid\x00"+appid+s(b"AppName",name)+s(b"Exe",exe)+s(b"StartDir",start)+s(b"icon",b"")+s(b"ShortcutPath",b"")+s(b"LaunchOptions",b"")
- +i(b"IsHidden",0)+i(b"AllowDesktopConfig",1)+i(b"AllowOverlay",0)+i(b"OpenVR",0)+i(b"Devkit",0)+s(b"DevkitGameID",b"")+i(b"DevkitOverrideAppID",0)+i(b"LastPlayTime",0)+s(b"FlatpakAppID",b"")+b"\x01sortas\x00\x00\x00tags\x00\x08\x08")
-assert d.endswith(b"\x08\x08\x08\x08") or d.endswith(b"\x08\x08")
-open(p,"wb").write(d[:-2]+e+b"\x08\x08"); print("Steam shortcut added"); put_art()
+def put_art(appid):
+    gd=os.path.join(os.path.dirname(p),"grid"); os.makedirs(gd,exist_ok=True); n=0
+    for src,dst in SRC:
+        sp=os.path.join(art,src); dp=os.path.join(gd,dst%appid)
+        if os.path.exists(sp) and not os.path.exists(dp): shutil.copy(sp,dp); n+=1
+    return n
+for exe,label in ((exe_game,b"SP Football Life 2026"),(exe_set,b"SP Football Life 2026 - Settings")):
+    exe_q=('"%s"'%exe).encode(); appid_n=(zlib.crc32(exe_q+label)|0x80000000)&0xffffffff
+    if exe_q in d:
+        print("Steam shortcut already present:",label.decode())
+    else:
+        ids=[int(x) for x in re.findall(rb"\x00(\d+)\x00\x02appid\x00",d)]; idx=(max(ids)+1) if ids else 0
+        e=(b"\x00"+str(idx).encode()+b"\x00\x02appid\x00"+struct.pack("<I",appid_n)+s(b"AppName",label)+s(b"Exe",exe_q)+s(b"StartDir",('"%s"'%start).encode())+s(b"icon",b"")+s(b"ShortcutPath",b"")+s(b"LaunchOptions",b"")
+         +i(b"IsHidden",0)+i(b"AllowDesktopConfig",1)+i(b"AllowOverlay",0)+i(b"OpenVR",0)+i(b"Devkit",0)+s(b"DevkitGameID",b"")+i(b"DevkitOverrideAppID",0)+i(b"LastPlayTime",0)+s(b"FlatpakAppID",b"")+b"\x01sortas\x00\x00\x00tags\x00\x08\x08")
+        assert d.endswith(b"\x08\x08")
+        d=d[:-2]+e+b"\x08\x08"; print("Steam shortcut added:",label.decode())
+    print("  artwork: %d file(s) added"%put_art(appid_n) if os.path.isdir(art) else "  no artwork folder, skipped")
+open(p,"wb").write(d)
 PY
   fi
 fi

@@ -58,10 +58,9 @@ hooks this game relies on, so stay on 9.x.
 
 ## Settings and mods
 
-- Display / V-Sync / controller type live in `settings.dat` (bytes 8-9: `77 08` = XInput, Full Screen, Enable 2;
-  other values: controller 6=DirectInput 7=XInput, screen 6=Windowed 7=Full Screen, V-Sync 02=off 04=Enable 1 08=Enable 2).
-  The default file assumes a **1920x1080** screen; if the resolution is wrong, delete that file and the game recreates a
-  default, or set it in `Settings.exe` run via Proton (Add `Settings.exe` as a non-Steam game with GE-Proton 9, not needed normally).
+- **Changing resolution / full screen / V-Sync / controller type:** double-click the **SP Football Life 2026 - Settings** Desktop icon
+  (or the same-named entry in Steam, or run `~/Games/spfl26-settings.sh`). It is a small native replacement for the game's
+  `Settings.exe`, which needs .NET/Mono and crashes under Box64. Pick the values, press **OK**, close the game first.
 - The in-game menu you see with a controller button / Space is **Sider** (mod loader: stadiums, kits, camera…).
 - Keep the Steam overlay **off** for this shortcut (the script does that).
 - Gameplay "Switcher": the Windows `FL26 switcher.exe` needs .NET and wasn't tested on ARM. The repo
