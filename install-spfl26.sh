@@ -50,7 +50,7 @@ cat > "$LAUNCHER" <<LAUNCH
 #!/bin/bash
 # SP Football Life 2026: GE-Proton 9 (x86_64) via Box64; starts Sider, then the game (FL_2026.bat)
 G="$GAME_DIR"
-export STEAM_COMPAT_CLIENT_INSTALL_PATH="\$HOME/.local/share/Steam" STEAM_COMPAT_DATA_PATH="$PREFIX" SteamAppId=0 SteamGameId=0
+export STEAM_COMPAT_CLIENT_INSTALL_PATH="\$HOME/.local/share/Steam" STEAM_COMPAT_DATA_PATH="$PREFIX" SteamAppId="\${SteamAppId:-0}" SteamGameId="\${SteamGameId:-0}"
 export WINEDLLOVERRIDES="ddraw=n,b;steam_api64=n,b;lsteamclient=d" ENABLE_GAMESCOPE_WSI=0 WINEDEBUG=-all
 export PROTON_USE_XALIA=0 PROTON_NO_ESYNC=1 PROTON_NO_FSYNC=1 PROTON_NO_NTSYNC=1 BOX64_NOBANNER=1
 [ -n "\$DISPLAY" ] || export DISPLAY=:0

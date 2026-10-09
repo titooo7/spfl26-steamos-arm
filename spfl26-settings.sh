@@ -22,7 +22,7 @@ CUR="${W}x${H}"
 
 first() { # put current value first so it is the default in the combo
   local cur="$1"; shift; local out="$cur"; for x in "$@"; do [ "$x" = "$cur" ] || out="$out|$x"; done; echo "$out"; }
-RES=$(first "$CUR" 1280x720 1366x768 1600x900 1920x1080 1920x1200 2560x1440 3840x2160)
+RES=$(first "$CUR" 854x480 960x540 1280x720 1366x768 1600x900 1920x1080 1920x1200 2560x1440 3840x2160)
 
 OUT=$(zenity --forms --title="SP Football Life 2026 - Settings" --width=420 \
   --text="Current: $CUR, $S, V-Sync $V, $C" \

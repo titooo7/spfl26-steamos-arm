@@ -46,6 +46,15 @@ play straight away, or **Close**. It works from Game Mode, so you never need to 
   the game unable to start (see Troubleshooting).
 - **Sider** is the mod loader behind the SmokePatch extras (stadiums, kits, anthems...). It starts by itself, you don't have to do
   anything. Its optional on-screen menu opens with the **Space** key (a keyboard is needed).
+- **Low fps (about 40-50)?** The game is limited by the CPU (x86 emulation), not the GPU, so lowering the resolution or graphics
+  barely helps. What helped most for smoothness on the Konkr is a fixed frame rate that fits the screen: set the refresh rate to
+  **90 Hz** in the quick access menu and add the line `export DXVK_FRAME_RATE=45` to `~/Games/launch-spfl26.sh`
+  (before the last line, `exec ...`). Locked 45 fps looks smoother than a rate that jumps between 40 and 50.
+  Not added by default, because faster devices may not need it.
+- **Frame generation (Lossless Scaling / lsfg-vk via Decky):** it loads into the game (the launcher passes Steam's app ID on, so per-game
+  profiles match), but in my tests on the Konkr it did **not** help: the game dropped to about 30 fps, 2x only reached a steady 60 with visible
+  artifacts on the ball, and 3x/4x was worse. Your device or settings may give better results, so it is worth a try, but don't expect miracles.
+- **Don't tweak Box64 speed options** such as `BOX64_DYNAREC_BIGBLOCK=3` or `BOX64_DYNAREC_SAFEFLAGS=0`: they make the match never finish loading.
 - Leave the Steam overlay **off** for these shortcuts (the script already does this).
 - Gameplay "Switcher": the Windows `FL26 switcher.exe` needs .NET and wasn't tested on ARM. eskay993's repo has a bash version
   (`FL_2026_Switcher-Linux.zip`, needs `yad`): https://github.com/eskay993/gamefiles/tree/main/sp-football-life-2026
